@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, Zap, Database, Sparkles } from 'lucide-react';
+import { ChevronDown, Zap, Database, Sparkles, Video } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { useFetchPostsQuery } from './features/dogs/dogs-api-slice';
 import { amountAdded, incremented } from './features/counter/counter-slice';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const count = useAppSelector((state: any) => state.counter.value);
@@ -13,14 +14,30 @@ export default function Home() {
   const [isCounterHovered, setIsCounterHovered] = useState(false);
   const [isTableVisible, setIsTableVisible] = useState(true);
   const { data, isFetching } = useFetchPostsQuery(numPosts);
+  const router = useRouter();
 
   function handleClick() {
     dispatch(incremented());
     // dispatch(amountAdded(3));
   }
 
+  function handleVCClick() {
+    router.push('/vc');
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden">
+      {/* VC Button (Top Right) */}
+      <div className="absolute top-4 right-4 z-20">
+        <button
+          onClick={handleVCClick}
+          className="flex items-center space-x-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-4 py-2 rounded-xl shadow-md backdrop-blur-lg border border-white/20 transition-all duration-300 group"
+        >
+          <Video className="w-5 h-5 sm:w-6 sm:h-6 text-purple-300 group-hover:text-pink-400 transition-colors duration-300" />
+          <span className="hidden sm:inline">Join VC</span>
+        </button>
+      </div>
+
       {/* Animated Background */}
       <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]"></div>
